@@ -33,15 +33,42 @@ export function useMonitor() {
   }, [sites])
 
   const checkSite = useCallback(async (site: MonitoredSite): Promise<SiteCheck> => {
+    console.log("[useMonitor] Iniciando checagem de site", {
+      id: site.id,
+      name: site.name,
+      url: site.url,
+    })
+
     try {
       const res = await fetch("/api/check-site", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ url: site.url }),
       })
+
+      console.log("[useMonitor] Resposta bruta de /api/check-site", {
+        ok: res.ok,
+        status: res.status,
+        statusText: res.statusText,
+      })
+
       const data = await res.json()
+
+      console.log("[useMonitor] JSON recebido de /api/check-site", data)
+
       return data as SiteCheck
-    } catch {
+    } catch (error) {
+      console.error("[useMonitor] Erro ao checar site", {
+        id: site.id,
+        name: site.name,
+        url: site.url,
+        error,
+      })
+
+      toast.error(`Erro ao checar o sistema ${site.name}`, {
+        description: "Veja o console do navegador para mais detalhes.",
+      })
+
       return {
         status: "offline",
         httpCode: 0,

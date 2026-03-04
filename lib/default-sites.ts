@@ -30,7 +30,7 @@ export const DEFAULT_SITES = [
   { name: "LDC", url: "https://ldc.br.trackit.host/legacy/Operation/Map" },
   { name: "DEX", url: "https://dex.br.trackit.host/legacy/Operation/Map" },
   { name: "EDC", url: "https://edc.br.trackit.host/legacy/Operation/Map" },
-  { name: "CBM", url: "https://cbm.br.trackit.host/legacy/Operation/Map" },
+  { name: "CBM", url: "https://sso.aiko.digital/realms/cbm/protocol/openid-connect/auth?client_id=trackit&redirect_uri=https%3A%2F%2Fcbm.br.trackit.host%2Flegacy%2Fsignin-oidc&response_type=code&scope=openid%20profile&code_challenge=r8gXqiiMIlEl2cUUr9ojO2GfFEdtNjMrA_dT1zSBaXo&code_challenge_method=S256&response_mode=form_post&nonce=639082544327927310.YWY0MDZlOGUtMjMwNy00Y2MwLThjYWMtNTc1NzUxZWVlZGYwMzYyN2NmMTAtZTc5Mi00NzQyLWJjMGEtZDg2NmVhMjRlMjI1&state=CfDJ8AXwpNJStE9GpvjFwiuWCiXpsRQEZTo8ZU5zX2qtN4eryr58WK5Bws2eTfy1Oe_EsVRbDAeG3vWT6p2NVjGftV7XyS1RSPRcFFJW9tRvu5NBvle1np8zRgQFhfDo9UsFfu5X_hcEWGe4JhnMwVnxAx2c3OlxD5vTadSFUqG5mr6C75kErBnBrX5wc6ujC1XoxTBf61DJbofMrK3SiOmYW6KinrHW-DKlBydLOJIN_x3nsjDBrvjo5T4OV7QI6gT03aHNgUkj5FG-xNm-8jSG5Z1b12XK09QrfqxFS5-Gxd1IcnCGK3wDhGQLiLP7nj5NC1W-ooFmAY6YIw9Cc6dAMpBHBnyYKAeWFosW1rQ2w0xVgtLRz2dj2UjJm9MXp-vFDhfm2AjjSPdBJKgC-GnauF9vKNGwaL4dfHqT3tThqRJ6&x-client-SKU=ID_NETSTANDARD2_0&x-client-ver=6.10.0.0" },
   { name: "JFI", url: "https://jfi.br.trackit.host/legacy/Operation/Map" },
   { name: "KLB", url: "https://klb.br.trackit.host/legacy/Operation/Map" },
   { name: "CNB", url: "https://cnb.br.trackit.host/legacy/Operation/Map" },
