@@ -1,25 +1,33 @@
 import { NextRequest, NextResponse } from "next/server"
+import { createLogger } from "@/lib/logger"
+
+const log = createLogger("api:check-site")
 
 export async function POST(request: NextRequest) {
   const { url } = await request.json()
 
-  console.log("[API /api/check-site] Requisição recebida", { url })
+  const requestId = `${Date.now()}-${Math.random().toString(16).slice(2)}`
+  log.info("Requisição recebida", { requestId, url })
 
   if (!url || typeof url !== "string") {
-    console.warn("[API /api/check-site] URL inválida recebida", { url })
+    log.warn("URL inválida recebida", { requestId, url })
     return NextResponse.json({ error: "URL is required" }, { status: 400 })
   }
 
   const startTime = Date.now()
 
   try {
+    /**
+     * We proxy the checker service through the Next.js backend to:
+     * - avoid browser CORS constraints
+     * - keep the UI contract stable (returns `SiteCheck`)
+     * - centralize mapping from the external API shape -> internal types
+     */
     const externalUrl = `http://localhost:3001/check?url=${encodeURIComponent(
       url,
     )}`
 
-    console.log("[API /api/check-site] Chamando serviço externo", {
-      externalUrl,
-    })
+    // log.debug("Chamando serviço externo", { requestId, externalUrl })
 
     const res = await fetch(externalUrl, {
       method: "GET",
@@ -30,12 +38,13 @@ export async function POST(request: NextRequest) {
 
     const rawText = await res.text()
 
-    console.log("[API /api/check-site] Resposta bruta do serviço externo", {
-      ok: res.ok,
-      status: res.status,
-      statusText: res.statusText,
-      rawText,
-    })
+    // log.debug("Resposta bruta do serviço externo", {
+    //   requestId,
+    //   ok: res.ok,
+    //   status: res.status,
+    //   statusText: res.statusText,
+    //   rawText,
+    // })
 
     if (!res.ok) {
       throw new Error(
@@ -47,7 +56,8 @@ export async function POST(request: NextRequest) {
     try {
       data = JSON.parse(rawText)
     } catch (parseError) {
-      console.error("[API /api/check-site] Erro ao fazer parse do JSON", {
+      log.error("Erro ao fazer parse do JSON", {
+        requestId,
         parseError,
         rawText,
       })
@@ -93,17 +103,18 @@ export async function POST(request: NextRequest) {
       timestamp: new Date().toISOString(),
     }
 
-    console.log("[API /api/check-site] Payload retornado para o front", payload)
+    // log.info("Payload retornado para o front", { requestId, payload })
 
     return NextResponse.json(payload)
   } catch (error: unknown) {
     const responseTime = Date.now() - startTime
 
-    console.error("[API /api/check-site] Erro ao checar site", {
-      url,
-      error,
-      responseTime,
-    })
+    // log.error("Erro ao checar site", {
+    //   requestId,
+    //   url,
+    //   error,
+    //   responseTime,
+    // })
 
     return NextResponse.json(
       {

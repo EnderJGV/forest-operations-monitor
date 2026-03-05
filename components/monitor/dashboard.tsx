@@ -13,6 +13,13 @@ import { OperationsPanel } from "./operations-panel"
 import { EmptyState } from "./empty-state"
 
 export function Dashboard() {
+  /**
+   * Top-level dashboard orchestrator.
+   *
+   * - Uses `useMonitor()` as the single source of truth for monitored sites + stats.
+   * - Auto-seeds the app with `DEFAULT_SITES` on first visit (when localStorage is empty).
+   * - Switches between normal mode and "Painel TV" mode for wallboard displays.
+   */
   const {
     sites,
     stats,

@@ -4,8 +4,10 @@ import { useCallback, useEffect, useRef, useState } from "react"
 import type { MonitoredSite, SiteCheck } from "@/lib/types"
 import { loadSites, saveSites, updateSiteCheck, calculateStats, parseSitesFromData } from "@/lib/monitor-store"
 import { toast } from "sonner"
+import { createLogger } from "@/lib/logger"
 
 const CHECK_INTERVAL = 60000
+const log = createLogger("useMonitor")
 
 export function useMonitor() {
   const [sites, setSites] = useState<MonitoredSite[]>([])
@@ -17,10 +19,12 @@ export function useMonitor() {
 
   // Load from localStorage on mount
   useEffect(() => {
+    // Prevents running twice in React StrictMode (dev) and avoids double-import/double-check.
     if (initializedRef.current) return
     initializedRef.current = true
     const stored = loadSites()
     if (stored.length > 0) {
+      log.info("Sites carregados do localStorage", { count: stored.length })
       setSites(stored)
     }
   }, [])
@@ -33,7 +37,7 @@ export function useMonitor() {
   }, [sites])
 
   const checkSite = useCallback(async (site: MonitoredSite): Promise<SiteCheck> => {
-    console.log("[useMonitor] Iniciando checagem de site", {
+    log.info("Iniciando checagem de site", {
       id: site.id,
       name: site.name,
       url: site.url,
@@ -46,7 +50,7 @@ export function useMonitor() {
         body: JSON.stringify({ url: site.url }),
       })
 
-      console.log("[useMonitor] Resposta bruta de /api/check-site", {
+      log.debug("Resposta bruta de /api/check-site", {
         ok: res.ok,
         status: res.status,
         statusText: res.statusText,
@@ -54,11 +58,11 @@ export function useMonitor() {
 
       const data = await res.json()
 
-      console.log("[useMonitor] JSON recebido de /api/check-site", data)
+      log.debug("JSON recebido de /api/check-site", data)
 
       return data as SiteCheck
     } catch (error) {
-      console.error("[useMonitor] Erro ao checar site", {
+      log.error("Erro ao checar site", {
         id: site.id,
         name: site.name,
         url: site.url,
@@ -82,6 +86,7 @@ export function useMonitor() {
     const sitesToCheck = currentSites || sites
     if (sitesToCheck.length === 0) return
 
+    log.info("Iniciando checagem em lote", { count: sitesToCheck.length })
     setIsChecking(true)
 
     // Mark all as checking

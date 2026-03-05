@@ -3,6 +3,8 @@ import type { MonitoredSite, SiteCheck, SiteStatus, DashboardStats } from "./typ
 const STORAGE_KEY = "aiko-monitor-sites"
 
 function categorize(name: string): "Operacional" | "Cliente" | "Interno" {
+  // Heuristic categorization based on the system "sigla"/name.
+  // This is domain-specific and can be adjusted as business rules evolve.
   const n = name.toUpperCase()
   const clientKeywords = ["ABE", "CJR", "ABF", "CVF", "ABR", "BRF", "VAF", "MEN", "INP", "RCF", "SML", "RFT", "CNE", "GLM", "CST", "VAP", "VLI", "FTM", "AGP", "LDC", "CBM", "JFI", "KLB", "CNB", "ELD", "SYL", "ARC", "ANG", "VRC", "TNS", "VPC"]
   const internalKeywords = ["TMP", "DEX", "EDC", "WST", "MTM"]
@@ -24,11 +26,13 @@ export function loadSites(): MonitoredSite[] {
 export function saveSites(sites: MonitoredSite[]): void {
   if (typeof window === "undefined") return
   try {
+    // Persist the whole monitoring state so the dashboard restores after refresh.
     localStorage.setItem(STORAGE_KEY, JSON.stringify(sites))
   } catch {}
 }
 
 export function parseSitesFromData(data: Array<{ name: string; url: string }>): MonitoredSite[] {
+  // Normalizes imported rows (Excel/CSV) into the internal `MonitoredSite` shape.
   return data.map((item, index) => ({
     id: `site-${index}-${Date.now()}`,
     name: item.name.trim(),
@@ -43,6 +47,7 @@ export function parseSitesFromData(data: Array<{ name: string; url: string }>): 
 }
 
 export function updateSiteCheck(site: MonitoredSite, check: SiteCheck): MonitoredSite {
+  // Keep a short rolling history for charts/trends.
   const history = [check, ...site.history].slice(0, 10)
   return {
     ...site,

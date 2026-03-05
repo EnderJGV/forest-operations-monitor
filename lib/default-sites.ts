@@ -1,3 +1,7 @@
+/**
+ * Default seed list used on first app visit (when localStorage is empty).
+ * Users can replace this list by importing an Excel/CSV file.
+ */
 export const DEFAULT_SITES = [
   { name: "ABE", url: "https://abe.br.trackit.host/legacy/Operation/Map" },
   { name: "CJR", url: "https://cjr.br.trackit.host/legacy/Operation/Map" },

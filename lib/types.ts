@@ -1,6 +1,10 @@
 export type SiteStatus = "online" | "offline" | "unstable" | "checking" | "unknown"
 
 export interface SiteCheck {
+  /**
+   * Normalized status used across the UI.
+   * This is derived from the external checker API response.
+   */
   status: SiteStatus
   httpCode: number | null
   responseTime: number | null
@@ -8,6 +12,10 @@ export interface SiteCheck {
 }
 
 export interface MonitoredSite {
+  /**
+   * Canonical representation of a monitored system used by the UI.
+   * Stored in localStorage so the dashboard state survives refresh.
+   */
   id: string
   name: string
   url: string

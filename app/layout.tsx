@@ -8,7 +8,7 @@ const _inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 const _geistMono = Geist_Mono({ subsets: ["latin"], variable: "--font-geist-mono" });
 
 export const metadata: Metadata = {
-  title: 'Aiko Digital - Forest Operations Web Monitor',
+  title: 'Aiko Digital - Web motitor de operação florestal',
   description: 'Centro de Monitoramento Operacional Digital - Gestao de colheita florestal, logistica e monitoramento de maquinas',
 }
 
