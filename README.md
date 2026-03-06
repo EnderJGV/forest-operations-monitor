@@ -1,6 +1,15 @@
-# forest-operations-monitor
+# Monitor de Paginas Web - Aiko Digital
 
 Dashboard web para **monitorar disponibilidade** e **tempo de resposta** de uma lista de sistemas (URLs), com importação por Excel/CSV, auto-refresh e modo “Painel TV”.
+
+### Versão de Desktop
+![Desktop](https://i.ibb.co/jkhS2Dty/image.png)
+
+### Versão Mobile
+![Mobile](https://i.ibb.co/3Yph7H6L/image.png)
+
+### Versão de TV
+![TV](https://i.ibb.co/5gVMJHQH/image.png)
 
 ## Como o projeto funciona (visão geral)
 
@@ -106,8 +115,3 @@ Depois **reinicie** o `npm run dev`.
 - Ligue os logs (seção acima) e compare:
   - **Client**: request para `/api/check-site` e JSON recebido
   - **Server**: erros em `app/api/check-site/route.ts` ou `lib/check-url.ts`
-
-## Sobre o v0
-
-Este projeto foi iniciado via [v0](https://v0.app). Link do projeto v0:
-`https://v0.app/chat/projects/prj_aICOMDGjiGwfqLLceQgySASTu9jh`
