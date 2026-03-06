@@ -3,45 +3,84 @@
 
 @custom-variant dark (&:is(.dark *));
 
-/* Aiko Digital - Dark theme by default */
+/* Aiko Digital - Paleta inspirada no logo (azul + verde) */
 :root {
-  --background: #141a17;
-  --foreground: #e8ede9;
-  --card: #1a2420;
-  --card-foreground: #e8ede9;
-  --popover: #1a2420;
-  --popover-foreground: #e8ede9;
-  --primary: #1F7A4C;
+  --background: #f3f7ff;
+  --foreground: #0b2148;
+  --card: #ffffff;
+  --card-foreground: #0b2148;
+  --popover: #ffffff;
+  --popover-foreground: #0b2148;
+  --primary: #0052a4;
   --primary-foreground: #ffffff;
-  --secondary: #0B3D2E;
-  --secondary-foreground: #d4e4da;
-  --muted: #1e2b25;
-  --muted-foreground: #8fa898;
-  --accent: #1F7A4C;
+  --secondary: #e3ecff;
+  --secondary-foreground: #0b2148;
+  --muted: #e6ecf5;
+  --muted-foreground: #64748b;
+  --accent: #16c35b;
   --accent-foreground: #ffffff;
-  --destructive: #C0392B;
+  --destructive: #d92d20;
   --destructive-foreground: #ffffff;
-  --border: #2a3a31;
-  --input: #243029;
-  --ring: #1F7A4C;
-  --chart-1: #1F7A4C;
-  --chart-2: #27ae60;
-  --chart-3: #C0392B;
-  --chart-4: #f39c12;
-  --chart-5: #3498db;
+  --border: #d0d9ea;
+  --input: #d0d9ea;
+  --ring: #0052a4;
+  --chart-1: #0052a4;
+  --chart-2: #16c35b;
+  --chart-3: #f59e0b;
+  --chart-4: #7c3aed;
+  --chart-5: #0ea5e9;
   --radius: 0.625rem;
-  --sidebar: #111916;
-  --sidebar-foreground: #e8ede9;
-  --sidebar-primary: #1F7A4C;
+  --sidebar: #f3f7ff;
+  --sidebar-foreground: #0b2148;
+  --sidebar-primary: #0052a4;
   --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #1e2b25;
-  --sidebar-accent-foreground: #e8ede9;
-  --sidebar-border: #2a3a31;
-  --sidebar-ring: #1F7A4C;
-  --success: #27ae60;
+  --sidebar-accent: #e3ecff;
+  --sidebar-accent-foreground: #0b2148;
+  --sidebar-border: #d0d9ea;
+  --sidebar-ring: #0052a4;
+  --success: #16c35b;
   --success-foreground: #ffffff;
-  --warning: #f39c12;
+  --warning: #f59e0b;
   --warning-foreground: #1E1E1E;
+}
+
+.dark {
+  --background: #020d26;
+  --foreground: #e5f1ff;
+  --card: #041632;
+  --card-foreground: #e5f1ff;
+  --popover: #041632;
+  --popover-foreground: #e5f1ff;
+  --primary: #1d6fd6;
+  --primary-foreground: #ffffff;
+  --secondary: #0b2547;
+  --secondary-foreground: #e5f1ff;
+  --muted: #0b2547;
+  --muted-foreground: #94a3b8;
+  --accent: #16c35b;
+  --accent-foreground: #020d26;
+  --destructive: #f97066;
+  --destructive-foreground: #1f0a0a;
+  --border: #1e3358;
+  --input: #1e3358;
+  --ring: #1d6fd6;
+  --chart-1: #64b5ff;
+  --chart-2: #3ddc84;
+  --chart-3: #fbbf24;
+  --chart-4: #a855f7;
+  --chart-5: #38bdf8;
+  --sidebar: #020d26;
+  --sidebar-foreground: #e5f1ff;
+  --sidebar-primary: #1d6fd6;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #0b2547;
+  --sidebar-accent-foreground: #e5f1ff;
+  --sidebar-border: #1e3358;
+  --sidebar-ring: #1d6fd6;
+  --success: #3ddc84;
+  --success-foreground: #020d26;
+  --warning: #fbbf24;
+  --warning-foreground: #020d26;
 }
 
 @theme inline {

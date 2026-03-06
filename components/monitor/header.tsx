@@ -1,7 +1,10 @@
 "use client"
 
-import { RefreshCw, Download, Monitor, Upload, TreePine } from "lucide-react"
+import Image from "next/image"
+import { useTheme } from "next-themes"
+import { RefreshCw, Download, Monitor, Upload, Moon, Sun } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import Logo from "@/components/assets/logo.jpg"
 
 interface HeaderProps {
   onRefresh: () => void
@@ -24,11 +27,19 @@ export function Header({
   sitesCount,
   onUploadClick,
 }: HeaderProps) {
+  const { theme, setTheme } = useTheme()
+  const isDark = (theme ?? "dark") === "dark"
+
   return (
     <header className="flex flex-col gap-4 border-b border-border px-6 py-4 lg:flex-row lg:items-center lg:justify-between">
       <div className="flex items-center gap-3">
-        <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary">
-          <TreePine className="h-5 w-5 text-primary-foreground" />
+        <div className="flex h-10 w-10 items-center justify-center rounded-lg">
+          <Image
+            src={Logo}
+            alt="Logo Aiko Digital"
+            className="h-8 w-8 object-contain rounded-lg"
+            priority
+          />
         </div>
         <div>
           <h1 className="text-lg font-semibold tracking-tight text-foreground">
@@ -77,6 +88,22 @@ export function Header({
         >
           <Monitor className="h-3.5 w-3.5" />
           <span className="hidden sm:inline">Painel TV</span>
+        </Button>
+
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => setTheme(isDark ? "light" : "dark")}
+          className="gap-2 border-border bg-card text-card-foreground hover:bg-muted"
+        >
+          {isDark ? (
+            <Sun className="h-3.5 w-3.5" />
+          ) : (
+            <Moon className="h-3.5 w-3.5" />
+          )}
+          <span className="hidden sm:inline">
+            {isDark ? "Modo claro" : "Modo escuro"}
+          </span>
         </Button>
 
         <Button
