@@ -9,28 +9,14 @@ O projeto tem 4 camadas principais:
 - **UI (React/Next.js)**: componentes do dashboard renderizam tabelas, cards e gráficos.
 - **Orquestração/Estado (hook)**: `hooks/use-monitor.ts` é a “cola” que carrega sites, dispara verificações e atualiza a UI.
 - **Persistência local (localStorage)**: `lib/monitor-store.ts` salva/restaura a lista e o histórico de checks no browser.
-- **Integração com o serviço de checagem (proxy)**: `app/api/check-site/route.ts` recebe `url` e chama o serviço externo em `http://localhost:3001/check?url=...`, convertendo a resposta para o formato interno (`SiteCheck`).
+- **Checagem de URL (built-in)**: `lib/check-url.ts` implementa a lógica de checagem (DNS, HTTP request, timeout). `app/api/check-site/route.ts` usa essa lógica e retorna `SiteCheck` para o dashboard.
 
 ## Pré-requisitos
 
 - **Node.js** (recomendado LTS)
 - **NPM** (ou yarn/pnpm)
-- Um serviço externo de checagem rodando em `http://localhost:3001` com o endpoint:
-  - `GET /check?url=<URL>` retornando algo como:
 
-```json
-{
-  "request": { "url": "https://google.com", "method": "GET" },
-  "response": {
-    "online": true,
-    "httpStatus": 200,
-    "statusText": "OK",
-    "finalUrl": "https://www.google.com/",
-    "redirects": 1,
-    "responseTimeMs": "480.87"
-  }
-}
-```
+Não é necessário nenhum serviço externo — a checagem roda dentro do Next.js.
 
 ## Rodando localmente
 
@@ -49,9 +35,8 @@ Abra `http://localhost:3000`.
 
 - **1) UI**: `components/monitor/header.tsx` chama `onRefresh`.
 - **2) Hook**: `useMonitor().checkAllSites()` marca todos como `checking` e dispara checagens em paralelo.
-- **3) Proxy (Next API Route)**: `POST /api/check-site` recebe `{ url }` e chama:
-  - `http://localhost:3001/check?url=<encodeURIComponent(url)>`
-- **4) Mapeamento**: o proxy converte o formato externo para:
+- **3) API Route**: `POST /api/check-site` recebe `{ url }` e chama `lib/check-url.ts` internamente.
+- **4) Mapeamento**: a rota converte o resultado para:
   - `SiteCheck = { status, httpCode, responseTime, timestamp }`
 - **5) UI atualiza**: `lib/monitor-store.ts` aplica `updateSiteCheck()` e mantém um histórico curto (últimos 10) para gráficos.
 
@@ -68,7 +53,8 @@ O status exibido na UI é derivado de `response.online`, `response.httpStatus` e
 - **`app/`**
   - **`app/page.tsx`**: entrada do app (renderiza `<Dashboard />`).
   - **`app/layout.tsx`**: layout global (providers, estilos, etc.).
-  - **`app/api/check-site/route.ts`**: rota backend do Next que funciona como **proxy** do serviço em `localhost:3001`.
+  - **`app/api/check-site/route.ts`**: rota que chama `lib/check-url.ts` e retorna `SiteCheck`.
+  - **`app/api/check/route.ts`**: rota GET `?url=...` que retorna o formato completo (compatível com a API original).
 - **`components/monitor/`** (UI do monitor)
   - **`dashboard.tsx`**: orquestra a tela principal e alterna para o modo Painel TV.
   - **`header.tsx`**: ações (refresh, export CSV, importar, modo TV).
@@ -83,6 +69,7 @@ O status exibido na UI é derivado de `response.online`, `response.httpStatus` e
 - **`hooks/`**
   - **`use-monitor.ts`**: lógica principal de monitoramento (estado, timers, checagem em lote).
 - **`lib/`**
+  - **`check-url.ts`**: lógica de checagem (DNS, HTTP com axios, timeout 8s, HTTPS sem validação de certificado).
   - **`types.ts`**: tipos compartilhados (`MonitoredSite`, `SiteCheck`, etc.).
   - **`monitor-store.ts`**: persistência/localStorage + estatísticas + export CSV.
   - **`default-sites.ts`**: lista inicial (seed) para primeira execução.
@@ -115,10 +102,10 @@ Depois **reinicie** o `npm run dev`.
 
 ## Dicas de troubleshooting (quando “tudo fica offline”)
 
-- Verifique se o serviço de checagem está realmente acessível em `http://localhost:3001/check?url=...`.
+- Verifique se as URLs estão corretas e acessíveis (DNS, firewall, etc.).
 - Ligue os logs (seção acima) e compare:
   - **Client**: request para `/api/check-site` e JSON recebido
-  - **Server**: resposta bruta do serviço externo (inclui `rawText`)
+  - **Server**: erros em `app/api/check-site/route.ts` ou `lib/check-url.ts`
 
 ## Sobre o v0
 
