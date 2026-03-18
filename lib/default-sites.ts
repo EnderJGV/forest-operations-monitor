@@ -51,5 +51,5 @@ export const DEFAULT_SITES = [
   { name: "AAO", url: "https://aao.br.trackit.host/Login" },
   { name: "MNL", url: "https://mnl.br.trackit.host/Login" },
   { name: "ATV", url: "https://atv.br.trackit.host/Login" },
-  { name: "CNE", url: "https://cne.br.trackit.host/Login" },
+  { name: "CNE", url: "https://qa.cnb.br.trackit.host/Login" },
 ]
